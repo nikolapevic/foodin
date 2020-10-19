@@ -4,7 +4,7 @@ global $current_user;
 
 $user_role = $current_user->role[0];
 
-
+//Display selected options and all available options from an array
 function nutrition_select($name, $title, $options_arr, $desc, $user){
 
 	$assigned_id = esc_attr( get_the_author_meta( $name, $user->ID ) );
@@ -37,6 +37,7 @@ function nutrition_select($name, $title, $options_arr, $desc, $user){
 	echo $row;
 }
 
+//Display user meta for text input fields 
 function nutrition_row($name, $title, $desc, $user){
 	$row .= '';
 	$row .= '<tr><th><label for="'.$name.'">' . $title . '</label></th>';
@@ -49,6 +50,7 @@ function nutrition_row($name, $title, $desc, $user){
 	echo $row;
 }
 
+//Display user meta for text input fields that are disabled
 function disabled_row($name, $title, $desc, $user){
 	$value = get_the_author_meta( $name, $user->ID );
 	if (is_array($value)){
@@ -66,7 +68,7 @@ function disabled_row($name, $title, $desc, $user){
 }
 
 
-//Checkbox arrays
+//Display checked options and all available checkboxes from an array
 function nutrition_checkbox($name, $title, $array, $desc, $user){
 	$row .= '';
 	$row .= '<tr><th><label for="'.$name.'">' . $title . '</label></th><td>';
@@ -90,6 +92,7 @@ function nutrition_checkbox($name, $title, $array, $desc, $user){
 	echo $row;
 }
 
+//Display selected radio button option and all available radio options from an array
 function nutrition_radio($name, $title, $array, $desc, $user){
 	$row .= '';
 	$row .= '<tr><th><label for="'.$name.'">' . $title . '</label></th><td>';
@@ -111,6 +114,7 @@ function nutrition_radio($name, $title, $array, $desc, $user){
 	echo $row;
 }
 
+//Display selected options and all available options from an array
 function select_options($name, $title, $options_arr, $desc, $user){
 	$set_option = esc_attr( get_the_author_meta( $name, $user->ID ) );
 	$row .= '';
@@ -133,6 +137,7 @@ function select_options($name, $title, $options_arr, $desc, $user){
 	echo $row;
 }
 
+//Return array of values with the assigned id on top
 function run_options($options_arr, $assigned_id){
 
 	$output = '';
@@ -158,7 +163,7 @@ function run_options($options_arr, $assigned_id){
 	return $output;
 }
 
-
+//Display 5 meals of the day with meal category variable
 function day_meals($name, $title, $breakfast, $snack_one, $lunch, $snack_two, $dinner, $user){
 	$values = get_the_author_meta( $name, $user->ID );
 	if(empty($values)){
@@ -179,6 +184,7 @@ function day_meals($name, $title, $breakfast, $snack_one, $lunch, $snack_two, $d
 add_action( 'show_user_profile', 'extra_user_profile_fields' );
 add_action( 'edit_user_profile', 'extra_user_profile_fields' );
 
+//Add extra user profile fields
 function extra_user_profile_fields( $user ) {
 
 	$current_id = get_current_user_id();
@@ -272,7 +278,7 @@ function extra_user_profile_fields( $user ) {
 add_action( 'personal_options_update', 'save_extra_user_profile_fields' );
 add_action( 'edit_user_profile_update', 'save_extra_user_profile_fields' );
 
-
+//Calculate bmr function and update on endpoints
 function update_calculate_bmr($gender, $weight, $height, $age, $activity, $user_id){
 	$activities = array(['factor'=>'Barely Active','value'=>1.2], ['factor'=>'1-2 times a week','value'=>1.375], ['factor'=>'3-5 times','value'=>1.55], ['factor'=>'5-7 times','value'=>1.725], ['factor'=>'More than once a day','value'=>1.9]);
 	
@@ -315,6 +321,7 @@ function update_calculate_bmr($gender, $weight, $height, $age, $activity, $user_
 	update_user_meta($user_id, 'amr', $amr);
 }
 
+
 function save_extra_user_profile_fields( $user_id ) {
 	if ( !current_user_can( 'edit_user', $user_id ) ) {
 		return false;
@@ -352,7 +359,7 @@ function save_extra_user_profile_fields( $user_id ) {
 	update_calculate_bmr($_POST['gender'], $_POST['weight'], $_POST['height'], $_POST['age'], $_POST['activity'], $user_id);
 }
 
-
+//Add nutritionist role
 add_role('nutritionist', 'Nutritionist', array(
 	'edit_posts' => true,
 	'edit_product' => true,

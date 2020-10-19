@@ -7,6 +7,7 @@ function foodin_form_update($name, $user_id){
 	}
 }
 
+//Add meal icon displayed in schedule
 function add_meal_icon(){
 	$icon = '<svg width="27px" height="26px" viewBox="0 0 27 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>cart_black</title>
@@ -25,7 +26,7 @@ function add_meal_icon(){
 	return $icon;
 }
 
-
+//Meal cart icon displayed in schedule
 function meals_icon(){
 	$icon = '<svg width="28px" height="24px" viewBox="0 0 28 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>Group</title>
@@ -173,6 +174,7 @@ function bundle_test_function(){
 
 add_action( 'add_meta_boxes', 'bundle_test_function' );
 
+//Return clients preferences
 function client_checks($array, $title){
 	$output = '';
 	$output = '<h4>' . $title . '</h4>';
@@ -185,6 +187,7 @@ function client_checks($array, $title){
 	return $output;
 }
 
+//Return clients goals
 function client_select($meta, $title, $array){
 	$output = '';
 	$output = '<h4>' . $title . '</h4>';
@@ -199,12 +202,13 @@ function client_select($meta, $title, $array){
 	return $output;
 }
 
-
+//Return percentage of two numbers
 function percentage($nominator,$denominator){
 	$output = round(intval($nominator)/intval($denominator)*100,1);
 	return $output;
 };
 
+//Return assigned meals from that day
 function assigned_diet_meals($id, $today){
 	$bproduct = wc_get_product($id);
 	if($bproduct){
@@ -226,6 +230,7 @@ function assigned_diet_meals($id, $today){
 	return $products;
 }
 
+//Not a reccomendation function, but I was going to create one based on preferences
 function recommended_diets($array,$user,$my_diets_title,$href){
 	$preview = '<div class="schedule-head">';
 	$preview .= '<div class="schedule-left"><h3>'.$my_diets_title.'</h3></div>';
@@ -282,6 +287,7 @@ function recommended_diets($array,$user,$my_diets_title,$href){
 	return $preview;
 }
 
+//Not a reccomendation function, but I was going to create one based on preferences
 function recommended_meals($array,$user,$my_meals_title,$href){
 	$output = '';
 	$i=0;
@@ -390,6 +396,7 @@ function recommended_meals($array,$user,$my_meals_title,$href){
 	return $output;
 }
 
+//Meals that are scheduled for that day on client dashboard
 function my_meals($array,$user,$my_meals_title,$href){
 	$output = '';
 	$i=0;
@@ -730,6 +737,7 @@ function shopping_list($array, $sl_title, $no_items_description){
 	return $output;
 }
 
+//Display clients meals and sum up all of macros of those meals
 function client_meals($array,$user){
 	$output = '';
 	$i=0;
@@ -812,6 +820,8 @@ function client_meals($array,$user){
 	return $output;
 }
 
+
+//Client info tab
 function client_info($title, $name, $user_id){
 	$meta = get_user_meta($user_id, $name, true);
 	if($meta){
@@ -822,7 +832,7 @@ function client_info($title, $name, $user_id){
 	return $output;
 }
 
-
+//Is the user active subscriber of that product id
 function active_subscription($product_id,$user_id){
 	$active_subscriptions = get_posts( array(
 		'numberposts' => 10, 
@@ -852,7 +862,7 @@ function active_subscription($product_id,$user_id){
 	return $output;
 }
 
-
+//Add nutritionist role for anyone that purchases $nutritional_subscription
 function change_role_on_purchase( $order_id ) {
 
 	$order = new WC_Order( $order_id );
@@ -871,7 +881,7 @@ function change_role_on_purchase( $order_id ) {
 			$user = new WP_User( $order->user_id );
 
 			// Add role
-			$user->add_role( 'nutritionist' );
+			$user->add_role( 'subscriber' );
 		}
 
 		if ( $order->user_id > 0 && $product_id == $nutritional_subscription ) {
@@ -884,6 +894,7 @@ function change_role_on_purchase( $order_id ) {
 	}
 }
 
+//Change when order item is processing
 add_action( 'woocommerce_order_status_processing', 'change_role_on_purchase' );
 
 //Convert Measures
@@ -922,7 +933,7 @@ add_action('woocommerce_product_data_panels', function() {
 	?></div><?php
 });
 
-
+//Add units to woocommerce product meta
 add_action('woocommerce_process_product_meta', function($post_id) {
 	$product = wc_get_product($post_id);
 
@@ -934,7 +945,7 @@ add_action('woocommerce_process_product_meta', function($post_id) {
 });
 
 
-//Recipe Tab in Product Meta Data
+//Recipe Tab in Product Meta Data only in Product Bundle
 add_filter('woocommerce_product_data_tabs', function($tabs) {
 	$tabs['recipe_steps'] = [
 		'label' => __('Recipe Steps', 'txtdomain'),
@@ -1061,20 +1072,21 @@ add_action('woocommerce_product_data_panels', function() {
 	?></div><?php
 });
 
-
+//Return sanitized text if there is post
 function sanitize_product_update($name, $product){
 	if($_POST[$name]){
 		$product->update_meta_data($name, sanitize_text_field($_POST[$name]));
 	}
 }
 
+//Return html text if there is post
 function decode_product_update($name, $product){
 	if($_POST[$name]){
 		$product->update_meta_data($name, html_entity_decode($_POST[$name]));
 	}
 }
 
-
+//Update that product meta
 add_action('woocommerce_process_product_meta', function($post_id) {
 	$product = wc_get_product($post_id);
 
@@ -1104,6 +1116,7 @@ add_action('woocommerce_process_product_meta', function($post_id) {
 
 add_action('woocommerce_product_data_panels', function() {
 
+//Add plan meals tab only for plans 
 ?><div id="plan_meals_data" class="panel woocommerce_options_panel hidden">
 
 	<p class="form-field _select_field">
@@ -1119,6 +1132,7 @@ add_action('woocommerce_product_data_panels', function() {
 		'status' => 'publish'
 	));
 
+	//Pick meals and add them to your plan
 	foreach($recipes as $k => $option){
 		$option_id = $option->get_id();
 		$option_name = $option->get_name();
@@ -1198,6 +1212,7 @@ add_action('woocommerce_product_data_panels', function() {
 
 	?></div>
 <script>
+	//Add meals button to add just product_id to input bar
 	var id = document.getElementById("_select");
 	id.addEventListener("change", function(){
 		var mealVal = id.selectedOptions[0].innerText.split(" | ")[0];
@@ -1248,6 +1263,7 @@ add_action('woocommerce_product_data_panels', function() {
 </script><?php
 });
 
+//Update days of that plan bundle
 add_action('woocommerce_process_product_meta', function($post_id) {
 	$product = wc_get_product($post_id);
 	// Select

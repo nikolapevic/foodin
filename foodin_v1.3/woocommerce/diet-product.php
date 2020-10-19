@@ -1,4 +1,6 @@
 <?php 
+
+//Post function to follow diets
 function follow_diet_function(){
     global $post;
     $terms = wp_get_post_terms( $post->ID, 'product_cat' );
@@ -15,12 +17,15 @@ add_action('woocommerce_product_meta_start', 'follow_diet_function');
 
 remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_excerpt', 20 );
 
+//Return single excerpt empty
 function woocommerce_template_single_excerpt() {
         return;
 	}
 
 add_action('woocommerce_single_product_summary', 'customizing_single_product_summary_hooks', 2  );
 
+
+//Remove price from bundle and plan products
 function customizing_single_product_summary_hooks(){
     global $post;
     $id = $post->ID;
@@ -32,7 +37,7 @@ function customizing_single_product_summary_hooks(){
 
 }
 
-              
+//Display recipe description in steps
 function recipe_description($id){
     
     $steps = [];
@@ -107,7 +112,7 @@ function steps_description(){
         echo '</div>';
     }
 }
-
+//Display a diet day for plan products
 function construct_diet_day($post_id, $name, $day_name) {
 
     $values = get_post_meta($post_id, $name, true);
@@ -150,7 +155,7 @@ function display_diet($post_id){
 
 add_action( 'woocommerce_after_single_product_summary', 'steps_description' );
 
-
+//Print servings line based on how many servings are in a meal
 function print_servings($postid, $name){
     $servings = get_post_meta($postid, 'servings', true);
     $half = $servings/2;
@@ -166,6 +171,8 @@ function print_servings($postid, $name){
     }
     return $output;
 }
+
+//Show fractions instead of decimal points
 function decToFraction($float) {
     // 1/2, 1/4, 1/8, 1/16, 1/3 ,2/3, 3/4, 3/8, 5/8, 7/8, 3/16, 5/16, 7/16,
     // 9/16, 11/16, 13/16, 15/16
@@ -187,6 +194,7 @@ function decToFraction($float) {
     return ($whole == 0 ? '' : $whole) . " " . ($roundedDecimal * $denom) . "/" . $denom;
 }
 
+//Convert from grams in case of existing units
 function convert_units($post_id,$description,$weight,$need){
 	$cupconvert = get_post_meta($post_id, 'cup', true);
 	$tableconvert = get_post_meta($post_id, 'tbsp', true);
@@ -214,6 +222,7 @@ function convert_units($post_id,$description,$weight,$need){
 	}
 }
 
+//Display ingredients needed
 function ingredients_needed($id){
 	
 	$ingredients .= '<h3>Ingredients</h3>';
@@ -357,6 +366,8 @@ function ingredients_needed($id){
 	return $ingredients;
 }
 
+
+//Display macros of that meal function
 function display_macros($product_id){
 	
 	$user_id = get_current_user_id();
@@ -371,6 +382,7 @@ function display_macros($product_id){
 	) );
 	$servings = number_format(get_post_meta($product_id, 'servings', true));
 	
+	//Run trough all bundled items
 	foreach ($results as $key => $id){
         $quantity = WC_PB_DB::get_bundled_item_meta( $key, 'quantity_min' );
         $override = WC_PB_DB::get_bundled_item_meta($key, 'override_description');
@@ -384,6 +396,7 @@ function display_macros($product_id){
 		$fats = number_format(nutritional_info($override,$description,$weight,get_post_meta( $id, 'fats', true ),$servings),1);
 		$fiber = number_format(nutritional_info($override,$description,$weight,get_post_meta( $id, 'fiber', true ),$servings),1);
 
+		//Sum values
 		$meal_kcal += $calories;
 		$meal_proteins += $proteins;
 		$meal_carbs += $carbs;

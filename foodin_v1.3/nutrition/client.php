@@ -1,5 +1,6 @@
 <?php
 
+//Check what subscriptions user has and return matching answer
 function check_subscriptions(){
 	$client = wp_get_current_user();
 	$client_id = $client->ID;
@@ -26,6 +27,7 @@ add_action( 'woocommerce_account_dashboard','check_subscriptions' );
 
 remove_action( 'woocommerce_account_dashboard', 'action_woocommerce_account_dashboard', 10, 0 );
 
+//Ordinal numbers function
 function ordinal($number) {
     $ends = array('th','st','nd','rd','th','th','th','th','th','th');
     if ((($number % 100) >= 11) && (($number%100) <= 13))
@@ -34,6 +36,7 @@ function ordinal($number) {
         return $number. $ends[$number % 10];
 }
 
+//Dashboard for clients side in profile
 function client_dashboard(){
 	//Get for viewing clients
 
@@ -158,6 +161,8 @@ function client_dashboard(){
 	}
 }
 
+//Pick from which store will variable products be displayed
+//Stores are based on shop tag in Attributes
 function pick_store($user_id){
 	
 	$user_shop = get_user_meta($user_id, 'shop', true);
@@ -208,6 +213,7 @@ function pick_store($user_id){
 	return $output;
 }
 
+//Input weight function
 function weight_input($weight){
 	$output = '';
 	$output .= '<h4>Update weight</h4>';
@@ -215,6 +221,7 @@ function weight_input($weight){
 	return $output;
 }
 
+//Display stars function
 function stars($array){
 	$output = '<form name="rating[]" method="post"><div class="nutrition-stars" onchange="dissapear()">';
 	foreach ($array as $k => $grade){
@@ -229,6 +236,7 @@ function stars($array){
 	return $output;
 }
 
+//Display average values
 function avg_values($array, $value){
 	$output = '';
 	$sum = array_sum(array_column($array, $value));
@@ -237,6 +245,7 @@ function avg_values($array, $value){
 	return $avg;
 }
 
+//Confirm removal
 function confirmation($nutri_id){
 	$output = '';
 	$output .= '<div id="confirmation" style="display:none">';
@@ -248,6 +257,7 @@ function confirmation($nutri_id){
 	return $output;	
 }
 
+//Display assigned nutritionist 
 function assigned_nutritionist(){
 
 	$date = getdate();

@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 
-
+//Landing page shortcode
 function landing_page(){
 	$freelink = 'https://foodin.io/';
 	$planslink = 'https://foodin.io/product-category/plans';

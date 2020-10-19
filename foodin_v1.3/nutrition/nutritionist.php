@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-
+//Display nutritionist dashboard view
 function nutritionist_content(){
 
 	if(is_user_logged_in()){
@@ -387,6 +387,7 @@ function nutritionist_content(){
 		$requests = '<h3 class="ddwc-inline">Requests</h3><div class="white-container">You don&apos;t have any requests yet.</div>';
 	}
 	
+	//If get method isn't selected, nutritionist is shown two buttons that toggle the helper
 	if(! $client_view ){
 		$client_view = '<button class="ddwc-inline btn-white button" id="nutri-help">Help</button>
 			<div id="help" class="text-center white-container disappear">
@@ -427,7 +428,7 @@ function nutritionist_content(){
 	return $output;
 }
 
-
+//Sum earnings while clients are active
 function sum_clients_subscription_days($active_client_records){
 	//Get earnings of the nutritionist
 	$sum_days = get_the_author_meta( 'earnings', $user_id );
@@ -493,7 +494,7 @@ function sum_clients_subscription_days($active_client_records){
 }
 
 
-//Functions for edit profile... should go to edit-account.php
+//Functions for edit profile... should be moved to edit-account.php
 
 function edit_row($name, $title, $desc, $user){
 	$row .= '';
@@ -658,30 +659,3 @@ function save_paypal_account_details( $user_id ) {
 	foodin_form_update('meat', $user_id);//Checkbox
 	foodin_form_update('cooking', $user_id);
 }
-
-
-/*public function get_customer_total_order() {
-    $customer_orders = get_posts( array(
-        'numberposts' => - 1,
-        'meta_key'    => '_customer_user',
-        'meta_value'  => get_current_user_id(),
-        'post_type'   => array( 'shop_order' ),
-        'post_status' => array( 'wc-completed' ),
-        'date_query' => array(
-            'after' => date('Y-m-d', strtotime('-10 days')),
-            'before' => date('Y-m-d', strtotime('today')) 
-        )
-
-    ) );
-
-    $total = 0;
-    foreach ( $customer_orders as $customer_order ) {
-        $order = wc_get_order( $customer_order );
-        $total += $order->get_total();
-    }
-
-    return $total;
-}
-*/
-//add_action('init', 'nutritionist_content');
-?>

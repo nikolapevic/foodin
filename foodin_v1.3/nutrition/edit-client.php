@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
-
+//Select options function for frontend
 function client_select_options($name, $title, $options_arr, $desc, $user){
 	$set_option = esc_attr( get_the_author_meta( $name, $user->ID ) );
 	$row .= '';
@@ -26,6 +26,7 @@ function client_select_options($name, $title, $options_arr, $desc, $user){
 	return $row;
 }
 
+//Run options for frontend
 function client_run_options($options_arr, $assigned_id){
 
 	$output = '';
@@ -55,6 +56,7 @@ function client_run_options($options_arr, $assigned_id){
 	return $output;
 }
 
+//Get image by product ID
 function img_url($id){
 	$product = wc_get_product($id);
 	if ($product){
@@ -66,6 +68,7 @@ function img_url($id){
 	}
 }
 
+//Sum all calories for meals in that day
 function dayCalories($array){
 	$calories = 0;
 	foreach ($array as $val){
@@ -77,6 +80,7 @@ function dayCalories($array){
 	return $calories;
 }
 
+//Return clients meals per day
 function client_day_meals($name, $title, $breakfast, $snack_one, $lunch, $snack_two, $dinner, $user){
 	$values = get_the_author_meta( $name, $user->ID );
 	if(empty($values)){
@@ -99,6 +103,7 @@ function client_day_meals($name, $title, $breakfast, $snack_one, $lunch, $snack_
 	return $row;
 }
 
+//Get meals of a category and number of posts
 function get_meals($name,$no_posts){
 	$array = wc_get_products(array(
 		'category' => array($name),
@@ -108,6 +113,7 @@ function get_meals($name,$no_posts){
 	return $array;
 }
 
+//Edit client view
 function edit_client(){
 	$user_id = get_current_user_id();
 	$client_id = $_GET['client'];

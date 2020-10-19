@@ -1,3 +1,4 @@
+//Add posts from frontend with REST API
 var portfolioPostsButton = document.getElementById("portfolio-posts-btn");
 var portfolioPostsContainer = document.getElementById("portfolio-posts-container");
 

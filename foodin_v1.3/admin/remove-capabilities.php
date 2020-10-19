@@ -1,5 +1,6 @@
 <?php 
 
+//Allow only admin and this user to change password
 class Password_Reset_Removed
 {
 
@@ -29,6 +30,8 @@ class Password_Reset_Removed
 
 $pass_reset_removed = new Password_Reset_Removed();
 
+
+//Hide capabilities from non admin users
 function hide_admin_capabilities()
 {
     if (!is_super_admin()) {
@@ -51,6 +54,7 @@ function hide_admin_capabilities()
 }
 add_action( 'admin_head', 'hide_admin_capabilities', 1 );
 
+//Remove editing metaboxes from non admin users
 function remove_metaboxes() {
 	if (!is_super_admin()) {
 		remove_meta_box('wpseo_meta','product','normal');

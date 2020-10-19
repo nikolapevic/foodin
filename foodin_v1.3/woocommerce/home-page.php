@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 
-
+//Return array of meals from any category
 function meal_array($name,$no_posts){
 	$array = wc_get_products(array(
 		'category' => array($name),
@@ -26,6 +26,7 @@ function meal_array($name,$no_posts){
 	return $array;
 }
 
+//Add shortcode home_landing
 add_shortcode('home_landing','home_landing');
 
 function home_landing(){
