@@ -1,0 +1,83 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Tomato API
+paths:
+  /tomato:
+    get:
+      summary: Get Tomato
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tomato'
+components:
+  schemas:
+    Tomato:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the tomato
+        description:
+          type: string
+          description: A description of the tomato
+        photo:
+          type: string
+          format: uri
+          description: A URL to a photo of the tomato
+        category:
+          type: string
+          description: The category the tomato belongs to
+        unitOfMeasure:
+          type: string
+          description: The unit of measure for the tomato
+        nutrients:
+          type: object
+          properties:
+            calories:
+              type: number
+              format: float
+              description: The number of calories in the tomato
+            proteins:
+              type: number
+              format: float
+              description: The amount of protein in the tomato
+            fats:
+              type: number
+              format: float
+              description: The amount of fat in the tomato
+            carbs:
+              type: number
+              format: float
+              description: The amount of carbohydrates in the tomato
+          required:
+            - calories
+            - proteins
+            - fats
+            - carbs
+        conversion:
+          type: array
+          items:
+            type: object
+            properties:
+              unit:
+                type: string
+                description: The unit of measurement to convert to
+              factor:
+                type: number
+                format: float
+                description: The conversion factor for the unit
+            required:
+              - unit
+              - factor
+          description: The conversions for the unit of measure
+      required:
+        - name
+        - description
+        - photo
+        - category
+        - unitOfMeasure
+        - nutrients
